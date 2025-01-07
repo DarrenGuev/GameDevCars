@@ -26,16 +26,17 @@ while running:
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT: 
             running = False
-    
-
 
     keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_q]:
+        running = False
  
+
     if keys[pygame.K_LEFT] and man.x > man.vel: 
         man.x -= man.vel 
         man.left = True
-        man.right = False 
-        
+        man.right = False
     elif keys[pygame.K_RIGHT] and man.x < screen_width - man.width - man.vel:
         man.x += man.vel 
         man.left = False
