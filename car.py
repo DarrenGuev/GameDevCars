@@ -1,5 +1,6 @@
 import pygame
 import sys
+import random
 
 driveRight = [
     pygame.image.load('r1.png'),
@@ -20,7 +21,7 @@ driveLeft = [
 
 
 car = pygame.image.load('straight.png')
-
+enemy_car = pygame.image.load('enemyCar.png')
 
 class player(object):
     def __init__(self, x, y, width, height):
@@ -50,5 +51,17 @@ class player(object):
                 self.walkCount += 1
         else:
             win.blit(car, (self.x, self.y))
+
+class obstacle(object):
+    def __init__(self, obs_y, width, height):
+        self.x = random.randrange(200,650)
+        self.y = obs_y
+        self.width = width
+        self.height = height
+        self.bumped = False
+        self.x_change = 0
+        self.obstacle_speed = 10
+        self.obs = 0
+        self.y_change = 0
 
 

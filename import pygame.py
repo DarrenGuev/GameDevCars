@@ -1,7 +1,7 @@
 import pygame
 import sys
 from car import player
-
+from car import obstacle
 # Initialize pygame
 pygame.init()
 
@@ -20,7 +20,7 @@ background_height = background_image.get_height()
 # Create a list to store background segments
 background_segments = []
 
-# Calculate how many segments we need to cover screen + 1 extra to prevent 
+# Calculate how many segments we need to cover screen + 1 extra to prevent gaps
 num_segments = (screen_height // background_height) + 2
 
 # Initialize background positions
@@ -60,7 +60,7 @@ def redraw_game_window():
 # Main game loop
 man = player(720, 650, 64, 64)
 running = True
-
+enemy = obstacle(-750, 56, 125)
 while running:
     clock.tick(27)
     
@@ -90,6 +90,5 @@ while running:
 # Quit
 pygame.quit()
 sys.exit()
-
 
 
