@@ -34,6 +34,11 @@ bg_x = (screen_width - background_width) // 2.83
 
 # Calculate scroll speed
 scroll_speed = 15
+
+# UI Elements
+score = 0
+font = pygame.font.Font(None, 36)
+
 def redraw_game_window():
     # Fill screen with gray first to avoid artifacts
     win.fill((119, 119, 119))
@@ -55,6 +60,13 @@ def redraw_game_window():
             segment['y'] = min_y - background_height
     
     man.draw(win)
+
+    # Draw Score
+    score_text = font.render("Score: " + str(score), True, (255, 255, 255))
+    text_rect = score_text.get_rect()
+    text_rect.center = (screen_width // 2, 50)
+    win.blit(score_text, text_rect)
+
     pygame.display.update()
 
 # Main game loop
@@ -87,6 +99,9 @@ while running:
         man.right = False
         man.walkCount = 0
     
+    # Update Score (Example: Increase score over time)
+    score += 1 
+
     redraw_game_window()
 
 # Quit
