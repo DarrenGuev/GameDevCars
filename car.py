@@ -3,24 +3,24 @@ import sys
 import random
 
 driveRight = [
-    pygame.image.load(r'C:\Users\kence\Desktop\CAR GAME\GameDevCars\Super Car Red\r1.png'),
-    pygame.image.load(r'C:\Users\kence\Desktop\CAR GAME\GameDevCars\Super Car Red\r2.png'),
-    pygame.image.load(r'C:\Users\kence\Desktop\CAR GAME\GameDevCars\Super Car Red\r3.png'),
-    pygame.image.load(r'C:\Users\kence\Desktop\CAR GAME\GameDevCars\Super Car Red\r4.png'),
-    pygame.image.load(r'C:\Users\kence\Desktop\CAR GAME\GameDevCars\Super Car Red\r5.png'),
+    pygame.image.load('r1.png'),
+    pygame.image.load('r2.png'),
+    pygame.image.load('r3.png'),
+    pygame.image.load('r4.png'),
+    pygame.image.load('r5.png'),
 ]
 
 driveLeft = [
-    pygame.image.load(r'C:\Users\kence\Desktop\CAR GAME\GameDevCars\Super Car Red\l1.png'),
-    pygame.image.load(r'C:\Users\kence\Desktop\CAR GAME\GameDevCars\Super Car Red\l2.png'),
-    pygame.image.load(r'C:\Users\kence\Desktop\CAR GAME\GameDevCars\Super Car Red\l3.png'),
-    pygame.image.load(r'C:\Users\kence\Desktop\CAR GAME\GameDevCars\Super Car Red\l4.png'),
-    pygame.image.load(r'C:\Users\kence\Desktop\CAR GAME\GameDevCars\Super Car Red\l5.png'),
+    pygame.image.load('l1.png'),
+    pygame.image.load('l2.png'),
+    pygame.image.load('l3.png'),
+    pygame.image.load('l4.png'),
+    pygame.image.load('l5.png'),
 ]
 
 
 
-car = pygame.image.load(r'C:\Users\kence\Desktop\CAR GAME\GameDevCars\Super Car Red\straight.png')
+car = pygame.image.load('straight.png')
 # enemy_car = pygame.image.load('enemyCar.png')
 
 class player(object):
@@ -52,16 +52,6 @@ class player(object):
         else:
             win.blit(car, (self.x, self.y))
 
-class obstacle(object):
-    def __init__(self, obs_y, width, height):
-        self.x = random.randrange(200,650)
-        self.y = obs_y
-        self.width = width
-        self.height = height
-        self.bumped = False
-        self.x_change = 0
-        self.obstacle_speed = 10
-        self.obs = 0
-        self.y_change = 0
+
 
 
