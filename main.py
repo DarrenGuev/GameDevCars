@@ -39,6 +39,35 @@ scroll_speed = 15
 score = 0
 font = pygame.font.Font(None, 36)
 
+def draw_start_menu():
+    """Draw the start menu with Start and Quit buttons."""
+    win.fill((0, 0, 0))  # Fill background with black
+
+    # Draw title
+    title_font = pygame.font.Font(None, 72)
+    title_text = title_font.render("Avoid the Obstacle", True, (255, 255, 255))
+    title_rect = title_text.get_rect(center=(screen_width // 2, screen_height // 4))
+    win.blit(title_text, title_rect)
+
+    # Draw buttons
+    button_font = pygame.font.Font(None, 48)
+
+    start_button = pygame.Rect(screen_width // 2 - 150, screen_height // 2 - 50, 300, 80)
+    quit_button = pygame.Rect(screen_width // 2 - 150, screen_height // 2 + 100, 300, 80)
+
+    pygame.draw.rect(win, (0, 128, 0), start_button)
+    pygame.draw.rect(win, (128, 0, 0), quit_button)
+
+    start_text = button_font.render("Start Game", True, (255, 255, 255))
+    quit_text = button_font.render("Quit Game", True, (255, 255, 255))
+
+    win.blit(start_text, start_button.move(50, 15).topleft)
+    win.blit(quit_text, quit_button.move(50, 15).topleft)
+
+    pygame.display.update()
+
+    return start_button, quit_button
+
 def redraw_game_window():
     # Fill screen with gray first to avoid artifacts
     win.fill((119, 119, 119))
@@ -69,40 +98,54 @@ def redraw_game_window():
 
     pygame.display.update()
 
-# Main game loop
+# Start Menu
 man = player(720, 650, 64, 64)
 running = True
+game_active = False
 
 while running:
-    collision1 = 640
-    collision2 = 960
-    clock.tick(24)
-    
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
+    if not game_active:
+        # Draw the start menu
+        start_button, quit_button = draw_start_menu()
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 running = False
-    
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT] and man.x > collision1- man.width - man.vel:
-        man.x -= man.vel
-        man.left = True
-        man.right = False
-    elif keys[pygame.K_RIGHT] and man.x < collision2 - man.width - man.vel:
-        man.x += man.vel
-        man.left = False
-        man.right = True
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if start_button.collidepoint(event.pos):
+                    game_active = True
+                elif quit_button.collidepoint(event.pos):
+                    running = False
     else:
-        man.left = False
-        man.right = False
-        man.walkCount = 0
-    
-    # Update Score (Example: Increase score over time)
-    score += 1 
+        collision1 = 640
+        collision2 = 960
+        clock.tick(24)
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+        
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] and man.x > collision1 - man.width - man.vel:
+            man.x -= man.vel
+            man.left = True
+            man.right = False
+        elif keys[pygame.K_RIGHT] and man.x < collision2 - man.width - man.vel:
+            man.x += man.vel
+            man.left = False
+            man.right = True
+        else:
+            man.left = False
+            man.right = False
+            man.walkCount = 0
+        
+        # Update Score (Example: Increase score over time)
+        score += 1 
 
-    redraw_game_window()
+        redraw_game_window()
 
 # Quit
 pygame.quit()
