@@ -64,7 +64,7 @@ running = True
 while running:
     collision1 = 640
     collision2 = 960
-    clock.tick(27)
+    clock.tick(24)
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -92,6 +92,3 @@ while running:
 # Quit
 pygame.quit()
 sys.exit()
-
-
-
