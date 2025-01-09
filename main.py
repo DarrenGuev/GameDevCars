@@ -62,6 +62,8 @@ man = player(720, 650, 64, 64)
 running = True
 
 while running:
+    collision1 = 640
+    collision2 = 960
     clock.tick(27)
     
     for event in pygame.event.get():
@@ -72,11 +74,11 @@ while running:
                 running = False
     
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT] and man.x > man.vel:
+    if keys[pygame.K_LEFT] and man.x > collision1- man.width - man.vel:
         man.x -= man.vel
         man.left = True
         man.right = False
-    elif keys[pygame.K_RIGHT] and man.x < screen_width - man.width - man.vel:
+    elif keys[pygame.K_RIGHT] and man.x < collision2 - man.width - man.vel:
         man.x += man.vel
         man.left = False
         man.right = True
