@@ -16,6 +16,7 @@ pygame.display.set_caption("Avoid the Obstacle")
 background_image = pygame.image.load('bg.jpg')
 background_width = background_image.get_width()
 background_height = background_image.get_height()
+scaled_bg = pygame.transform.scale(background_image, (background_width, background_height)) 
 
 # Create a list to store background segments
 background_segments = []
