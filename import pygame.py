@@ -3,8 +3,6 @@ import pygame
 import sys
 from car_test import player_test
 import random
-
-# Initialize pygame
 pygame.init()
 
 # Screen code
@@ -18,10 +16,8 @@ pygame.display.set_caption("Avoid the Obstacle")
 background_image = pygame.image.load('bg.jpg')
 background_width = background_image.get_width()
 background_height = background_image.get_height()
-
 # Create a list to store background segments
 background_segments = []
-
 # Calculate how many segments we need to cover screen + 1 extra to prevent a gap
 num_segments = (screen_height // background_height) + 2
 
@@ -85,18 +81,18 @@ def redraw_game_window():
 
     pygame.display.update()
 
-# Load different car images for the player and obstacles, resize to 70x70
+# Load different car images for the player and obstacles, resize to 90x90
 enemyCar1 = pygame.image.load('enemyCar1.png')
-enemyCar1 = pygame.transform.scale(enemyCar1, (90, 90))
+enemyCar1 = pygame.transform.scale(enemyCar1, (120, 120))
 
 enemyCar2 = pygame.image.load('enemyCar2.png')
-enemyCar2 = pygame.transform.scale(enemyCar2, (90, 90))
+enemyCar2 = pygame.transform.scale(enemyCar2, (120, 120))
 
 enemyCar3 = pygame.image.load('enemyCar3.png')
-enemyCar3 = pygame.transform.scale(enemyCar3, (90, 90))
+enemyCar3 = pygame.transform.scale(enemyCar3, (120, 120))
 
 enemyCar4 = pygame.image.load('enemyCar4.png')
-enemyCar4 = pygame.transform.scale(enemyCar4, (90, 90))
+enemyCar4 = pygame.transform.scale(enemyCar4, (120, 120))
 
 obstacle_car_images = [enemyCar1, enemyCar2, enemyCar3, enemyCar4]
 
@@ -141,6 +137,7 @@ while running:
             enemy.y = 0 - enemy.height
             enemy.x = random.randrange(640, 960)
             enemy.image = random.choice(obstacle_car_images)
+            score += 10  # Award points for successfully dodging an enemy
     
     redraw_game_window()
 
