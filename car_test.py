@@ -29,7 +29,7 @@ class player_test(object):
         self.y = y
         self.width = width
         self.height = height
-        self.vel = 15
+        self.vel = 10
         self.isJump = False
         self.jumpCount = 10
         self.left = False
