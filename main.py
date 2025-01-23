@@ -16,6 +16,9 @@ class Obstacle:
     def draw(self, win):
         win.blit(self.image, (self.x, self.y))
 
+    def get_rect(self):
+        return pygame.Rect(self.x, self.y, self.width, self.height)
+
 def main():
     game_window = GameWindow(1920, 1080, "Avoid the Obstacle")
     enemyCar1 = pygame.image.load('enemyCar1.png')
@@ -72,7 +75,8 @@ def main():
     max_scroll_speed = 40
     max_obstacle_speed = 60
     max_player_speed = 20
-
+    
+    # Main game loop
     while running:
         game_window.clock.tick(30)
         
@@ -105,6 +109,11 @@ def main():
                 enemy.y = 0 - enemy.height
                 enemy.x = random.randrange(700, 1100)
                 enemy.image = random.choice(obstacle_car_images)
+
+            # Check for collision between player and enemy
+            if man.get_rect().colliderect(enemy.get_rect()):
+                print("Collision detected!")
+                running = False  # Stop the game if collision occurs
 
         # Increase game speed over time
         speed_increase_timer += game_window.clock.get_time()

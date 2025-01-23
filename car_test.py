@@ -51,3 +51,7 @@ class player_test(object):
                 self.walkCount += 1
         else:
             win.blit(car, (self.x, self.y))
+            
+    def get_rect(self):
+        # This method returns a pygame.Rect object for the player car
+        return pygame.Rect(self.x, self.y, self.width, self.height)
