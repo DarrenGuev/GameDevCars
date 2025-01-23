@@ -21,14 +21,6 @@ class Obstacle:
 
 def main():
     game_window = GameWindow(1920, 1080, "Avoid the Obstacle")
-    enemyCar1 = pygame.image.load('enemyCar1.png')
-    enemyCar1 = pygame.transform.scale(enemyCar1, (140, 140))
-    enemyCar2 = pygame.image.load('enemyCar2.png')
-    enemyCar2 = pygame.transform.scale(enemyCar2, (110, 120))
-    enemyCar3 = pygame.image.load('enemyCar3.png')
-    enemyCar3 = pygame.transform.scale(enemyCar3, (100, 130))
-    enemyCar4 = pygame.image.load('enemyCar4.png')
-    enemyCar4 = pygame.transform.scale(enemyCar4, (140, 140))
     enemyCar5 = pygame.image.load('enemyCar5.png')
     enemyCar5 = pygame.transform.scale(enemyCar5, (40, 70))
     enemyCar6 = pygame.image.load('enemyCar6.png')
@@ -55,7 +47,7 @@ def main():
     enemyCar17 = pygame.transform.scale(enemyCar17, (40, 70))
     enemyCar18 = pygame.image.load('enemyCar18.png')
     enemyCar18 = pygame.transform.scale(enemyCar18, (40, 70))
-    obstacle_car_images = [enemyCar1, enemyCar2, enemyCar3, enemyCar4, enemyCar5,
+    obstacle_car_images = [enemyCar5,
                            enemyCar6, enemyCar8, enemyCar9, enemyCar10, enemyCar11, 
                            enemyCar12, enemyCar13, enemyCar14, enemyCar15, enemyCar16, 
                            enemyCar17, enemyCar18]
