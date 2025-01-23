@@ -45,13 +45,15 @@ def is_overlapping(car1, car2):
 def display_menu(win, width, height):
     """Display a start menu with Start and Quit buttons"""
     font = pygame.font.Font(None, 74)
-    title_text = font.render("Avoid the Obstacle", True, (255, 255, 255))
-    start_button = pygame.Rect(width // 2 - 100, height // 2 - 50, 200, 50)
-    quit_button = pygame.Rect(width // 2 - 100, height // 2 + 20, 200, 50)
+    title_text = font.render("Avoid the Obstacle", True, (0, 0, 0))
+    start_button = pygame.Rect(width // 2 - 100, height // 2 + 230, 200, 50)  # Adjusted y coordinate
+    quit_button = pygame.Rect(width // 2 - 100, height // 2 + 300, 200, 50)  # Adjusted y coordinate
+    background = pygame.image.load('background.png')
+
 
     while True:
-        win.fill((0, 0, 0))  # Black background
-        win.blit(title_text, (width // 2 - title_text.get_width() // 2, height // 4))
+        win.blit(background, (0,0))
+        win.blit(title_text, (width // 2 - title_text.get_width() // 2, height // 1.60))
 
         # Draw buttons
         pygame.draw.rect(win, (0, 255, 0), start_button)  # Green button for Start
