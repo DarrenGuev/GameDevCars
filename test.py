@@ -19,16 +19,26 @@ class Obstacle:
     def get_rect(self):
         return pygame.Rect(self.x, self.y, self.width, self.height)
 
+def draw_start_menu(win, width, height):
+    win.fill((0, 0, 0))
+    font = pygame.font.SysFont("comicsans", 80)
+    title_text = font.render("Avoid the Obstacle", True, (255, 255, 255))
+    button_text = font.render("Start", True, (0, 0, 0))
+
+    # Draw title
+    win.blit(title_text, (width // 2 - title_text.get_width() // 2, height // 3))
+
+    # Draw button
+    button_rect = pygame.Rect(width // 2 - 100, height // 2, 200, 80)
+    pygame.draw.rect(win, (0, 255, 0), button_rect)
+    win.blit(button_text, (width // 2 - button_text.get_width() // 2, height // 2 + 10))
+
+    pygame.display.update()
+    return button_rect
+
 def main():
+    pygame.init()
     game_window = GameWindow(1920, 1080, "Avoid the Obstacle")
-    enemyCar1 = pygame.image.load('enemyCar1.png')
-    enemyCar1 = pygame.transform.scale(enemyCar1, (140, 140))
-    enemyCar2 = pygame.image.load('enemyCar2.png')
-    enemyCar2 = pygame.transform.scale(enemyCar2, (110, 120))
-    enemyCar3 = pygame.image.load('enemyCar3.png')
-    enemyCar3 = pygame.transform.scale(enemyCar3, (100, 130))
-    enemyCar4 = pygame.image.load('enemyCar4.png')
-    enemyCar4 = pygame.transform.scale(enemyCar4, (140, 140))
     enemyCar5 = pygame.image.load('enemyCar5.png')
     enemyCar5 = pygame.transform.scale(enemyCar5, (40, 70))
     enemyCar6 = pygame.image.load('enemyCar6.png')
@@ -55,7 +65,7 @@ def main():
     enemyCar17 = pygame.transform.scale(enemyCar17, (40, 70))
     enemyCar18 = pygame.image.load('enemyCar18.png')
     enemyCar18 = pygame.transform.scale(enemyCar18, (40, 70))
-    obstacle_car_images = [enemyCar1, enemyCar2, enemyCar3, enemyCar4, enemyCar5,
+    obstacle_car_images = [enemyCar5,
                            enemyCar6, enemyCar8, enemyCar9, enemyCar10, enemyCar11, 
                            enemyCar12, enemyCar13, enemyCar14, enemyCar15, enemyCar16, 
                            enemyCar17, enemyCar18]
@@ -63,6 +73,20 @@ def main():
     man = player_test(910, 850, 90, 90)
     collision1 = 810
     collision2 = 1200
+
+    # Display the start menu
+    start_button = draw_start_menu(game_window.win, game_window.width, game_window.height)
+
+    waiting = True
+    while waiting:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if start_button.collidepoint(event.pos):
+                    waiting = False
+
     enemies = [Obstacle(random.randrange(collision1, collision2), -random.randint(0, game_window.height), 90, 90, random.choice(obstacle_car_images)) for _ in range(4)]
     running = True
 
@@ -76,16 +100,17 @@ def main():
     max_obstacle_speed = 60
     max_player_speed = 20
 
+    # Main game loop
     while running:
         game_window.clock.tick(30)
-        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
-        
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and man.x > collision1 - man.width - man.vel:
             man.x -= man.vel
@@ -99,7 +124,7 @@ def main():
             man.left = False
             man.right = False
             man.walkCount = 0
-        
+
         game_window.increase_score()
 
         for enemy in enemies:
@@ -122,7 +147,7 @@ def main():
                 enemy.obstacle_speed = min(enemy.obstacle_speed * speed_increase_factor, max_obstacle_speed)
             man.vel = min(man.vel * speed_increase_factor, max_player_speed)
             speed_increase_timer = 0
-        
+
         game_window.redraw_game_window(man, enemies)
 
     pygame.quit()
