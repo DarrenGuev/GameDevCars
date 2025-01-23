@@ -1,94 +1,108 @@
 import pygame
 import sys
-from car import player
+from car_test import player_test
+import random
+from screen import GameWindow
 
-# Initialize pygame
-pygame.init()
+class Obstacle:
+    def __init__(self, x, y, width, height, image):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.obstacle_speed = 10
+        self.image = image
 
-# Screen code
-clock = pygame.time.Clock()
-screen_height = 1080
-screen_width = 1920
-win = pygame.display.set_mode((screen_width, screen_height), pygame.FULLSCREEN)
-pygame.display.set_caption("Avoid the Obstacle")
+    def draw(self, win):
+        win.blit(self.image, (self.x, self.y))
 
-# Load background
-background_image = pygame.image.load('bg124.png')
-background_width = background_image.get_width()
-background_height = background_image.get_height()
+def main():
+    game_window = GameWindow(1920, 1080, "Avoid the Obstacle")
+    enemyCar1 = pygame.image.load('enemyCar1.png')
+    enemyCar1 = pygame.transform.scale(enemyCar1, (140, 140))
+    enemyCar2 = pygame.image.load('enemyCar2.png')
+    enemyCar2 = pygame.transform.scale(enemyCar2, (110, 120))
+    enemyCar3 = pygame.image.load('enemyCar3.png')
+    enemyCar3 = pygame.transform.scale(enemyCar3, (100, 130))
+    enemyCar4 = pygame.image.load('enemyCar4.png')
+    enemyCar4 = pygame.transform.scale(enemyCar4, (140, 140))
+    enemyCar5 = pygame.image.load('enemyCar4.png')
+    enemyCar5 = pygame.transform.scale(enemyCar4, (140, 140))
+    enemyCar6 = pygame.image.load('enemyCar4.png')
+    enemyCar6 = pygame.transform.scale(enemyCar4, (140, 140))
+    enemyCar7 = pygame.image.load('enemyCar4.png')
+    enemyCar7 = pygame.transform.scale(enemyCar4, (140, 140))
+    enemyCar8 = pygame.image.load('enemyCar4.png')
+    enemyCar8 = pygame.transform.scale(enemyCar4, (140, 140))
+    enemyCar9 = pygame.image.load('enemyCar4.png')
+    enemyCar9 = pygame.transform.scale(enemyCar4, (140, 140))
+    enemyCar10 = pygame.image.load('enemyCar4.png')
+    enemyCar10 = pygame.transform.scale(enemyCar4, (140, 140))
+    obstacle_car_images = [enemyCar1, enemyCar2, enemyCar3, enemyCar4, enemyCar5,
+                           enemyCar6, enemyCar7, enemyCar8, enemyCar9, enemyCar10]
 
-# Create a list to store background segments
-background_segments = []
+    man = player_test(910, 850, 90, 90)
+    collision1 = 810
+    collision2 = 1200
+    enemies = [Obstacle(random.randrange(collision1, collision2), -random.randint(0, game_window.height), 90, 90, random.choice(obstacle_car_images)) for _ in range(4)]
+    running = True
 
-# Calculate how many segments we need to cover screen + 1 extra to prevent 
-num_segments = (screen_height // background_height) + 2
+    # Timer for speed increase
+    speed_increase_timer = 0
+    speed_increase_interval = 10  # Increase speed
+    speed_increase_factor = 1.0005  # Increase speed by 5% every interval
 
-# Initialize background positions
-# Start with one segment above the screen to ensure smooth scrolling
-for i in range(num_segments):
-    y = i * background_height - background_height
-    background_segments.append({'y': y, 'image': background_image.copy()})
+    # Speed limits
+    max_scroll_speed = 40
+    max_obstacle_speed = 60
+    max_player_speed = 20
 
-# Calculate position to center the background
-bg_x = (screen_width - background_width) // 2.83
-
-# Calculate scroll speed
-scroll_speed = 15
-def redraw_game_window():
-    # Fill screen with gray first to avoid artifacts
-    win.fill((119, 119, 119))
-    
-    # Update and draw background segments
-    for segment in background_segments:
-        # Update position
-        segment['y'] += scroll_speed
+    while running:
+        game_window.clock.tick(30)
         
-        # Draw the segment
-        win.blit(segment['image'], (bg_x, segment['y']))
-    
-    # Check if any segment has moved entirely below the screen
-    for segment in background_segments:
-        if segment['y'] >= screen_height:
-            # Find the highest segment (smallest y value)
-            min_y = min(seg['y'] for seg in background_segments)
-            # Place this segment above the highest segment, precisely aligned
-            segment['y'] = min_y - background_height
-    
-    man.draw(win)
-    pygame.display.update()
-
-# Main game loop
-man = player(720, 650, 64, 64)
-running = True
-
-while running:
-    collision1 = 640
-    collision2 = 960
-    clock.tick(24)
-    
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 running = False
-    
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT] and man.x > collision1- man.width - man.vel:
-        man.x -= man.vel
-        man.left = True
-        man.right = False
-    elif keys[pygame.K_RIGHT] and man.x < collision2 - man.width - man.vel:
-        man.x += man.vel
-        man.left = False
-        man.right = True
-    else:
-        man.left = False
-        man.right = False
-        man.walkCount = 0
-    
-    redraw_game_window()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+        
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] and man.x > collision1 - man.width - man.vel:
+            man.x -= man.vel
+            man.left = True
+            man.right = False
+        elif keys[pygame.K_RIGHT] and man.x < collision2 - man.width - man.vel:
+            man.x += man.vel
+            man.left = False
+            man.right = True
+        else:
+            man.left = False
+            man.right = False
+            man.walkCount = 0
+        
+        game_window.increase_score()
 
-# Quit
-pygame.quit()
-sys.exit()
+        for enemy in enemies:
+            enemy.y += enemy.obstacle_speed
+            if enemy.y > game_window.height:
+                enemy.y = 0 - enemy.height
+                enemy.x = random.randrange(700, 1100)
+                enemy.image = random.choice(obstacle_car_images)
+
+        # Increase game speed over time
+        speed_increase_timer += game_window.clock.get_time()
+        if speed_increase_timer >= speed_increase_interval:
+            game_window.scroll_speed = min(game_window.scroll_speed * speed_increase_factor, max_scroll_speed)
+            for enemy in enemies:
+                enemy.obstacle_speed = min(enemy.obstacle_speed * speed_increase_factor, max_obstacle_speed)
+            man.vel = min(man.vel * speed_increase_factor, max_player_speed)
+            speed_increase_timer = 0
+        
+        game_window.redraw_game_window(man, enemies)
+
+    pygame.quit()
+    sys.exit()
+
+if __name__ == "__main__":
+    main()
