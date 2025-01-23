@@ -36,8 +36,50 @@ def check_collision(player, enemy):
     # Check if the masks overlap (collision)
     return player_mask.overlap(enemy_mask, (offset_x, offset_y)) is not None
 
+def display_menu(win, width, height):
+    """Display a start menu with Start and Quit buttons"""
+    font = pygame.font.Font(None, 74)
+    title_text = font.render("Avoid the Obstacle", True, (255, 255, 255))
+    start_button = pygame.Rect(width // 2 - 100, height // 2 - 50, 200, 50)
+    quit_button = pygame.Rect(width // 2 - 100, height // 2 + 20, 200, 50)
+
+    while True:
+        win.fill((0, 0, 0))  # Black background
+        win.blit(title_text, (width // 2 - title_text.get_width() // 2, height // 4))
+
+        # Draw buttons
+        pygame.draw.rect(win, (0, 255, 0), start_button)  # Green button for Start
+        pygame.draw.rect(win, (255, 0, 0), quit_button)  # Red button for Quit
+
+        # Button text
+        start_text = font.render("Start", True, (0, 0, 0))
+        quit_text = font.render("Quit", True, (0, 0, 0))
+        win.blit(start_text, (start_button.x + start_button.width // 2 - start_text.get_width() // 2,
+                              start_button.y + start_button.height // 2 - start_text.get_height() // 2))
+        win.blit(quit_text, (quit_button.x + quit_button.width // 2 - quit_text.get_width() // 2,
+                             quit_button.y + quit_button.height // 2 - quit_text.get_height() // 2))
+
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                if start_button.collidepoint(mouse_pos):
+                    return  # Start the game
+                elif quit_button.collidepoint(mouse_pos):
+                    pygame.quit()
+                    sys.exit()
+
 def main():
     pygame.init()
+    game_window = GameWindow(1920, 1080, "Avoid the Obstacle")
+
+    display_menu(game_window.window, game_window.width, game_window.height)
+
+
     game_window = GameWindow(1920, 1080, "Avoid the Obstacle")
     enemyCar5 = pygame.image.load('enemyCar5.png').convert_alpha()
     enemyCar5 = pygame.transform.scale(enemyCar5, (40, 70))
