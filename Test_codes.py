@@ -19,13 +19,13 @@ class Obstacle:
 def main():
     game_window = GameWindow(1920, 1080, "Avoid the Obstacle")
     enemyCar1 = pygame.image.load('enemyCar1.png')
-    enemyCar1 = pygame.transform.scale(enemyCar1, (90, 90))
+    enemyCar1 = pygame.transform.scale(enemyCar1, (90, 110))
     enemyCar2 = pygame.image.load('enemyCar2.png')
-    enemyCar2 = pygame.transform.scale(enemyCar2, (90, 90))
+    enemyCar2 = pygame.transform.scale(enemyCar2, (90, 110))
     enemyCar3 = pygame.image.load('enemyCar3.png')
-    enemyCar3 = pygame.transform.scale(enemyCar3, (90, 90))
+    enemyCar3 = pygame.transform.scale(enemyCar3, (90, 110))
     enemyCar4 = pygame.image.load('enemyCar4.png')
-    enemyCar4 = pygame.transform.scale(enemyCar4, (90, 90))
+    enemyCar4 = pygame.transform.scale(enemyCar4, (90, 110))
     obstacle_car_images = [enemyCar1, enemyCar2, enemyCar3, enemyCar4]
 
     man = player_test(910, 850, 90, 90)
@@ -36,8 +36,8 @@ def main():
 
     # Timer for speed increase
     speed_increase_timer = 0
-    speed_increase_interval = 2000  # Increase speed every 5000 milliseconds (5 seconds)
-    speed_increase_factor = 1.07  # Increase speed by 5% every interval
+    speed_increase_interval = 10  # Increase speed
+    speed_increase_factor = 1.0005  # Increase speed by 5% every interval
 
     # Speed limits
     max_scroll_speed = 40

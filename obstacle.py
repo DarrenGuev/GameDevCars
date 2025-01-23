@@ -8,7 +8,7 @@ class obstacle(object):
         self.y = y
         self.width = width
         self.height = height
-        self.obstacle_speed = 20
+        self.obstacle_speed = 30
         self.obs = 0
         self.y_change = 0
         self.obs_x = random.randrange(400, 1200)
