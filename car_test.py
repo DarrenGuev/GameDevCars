@@ -35,23 +35,27 @@ class player_test(object):
         self.left = False
         self.right = False
         self.walkCount = 0
+        self.image = pygame.image.load('straight.png')  # Load the player image
+        self.mask = self.create_mask(self.image)  # Create mask for player
 
-    def draw(self,win):
+    def draw(self, win):
         if self.walkCount + 1 >= 27:
             self.walkCount = 0
             
         if self.left:
-             win.blit(driveLeft[self.walkCount//3], (self.x,self.y))
-             if self.walkCount < 12:
-                 self.walkCount += 1
-
+            win.blit(driveLeft[self.walkCount//3], (self.x,self.y))
+            if self.walkCount < 12:
+                self.walkCount += 1
         elif self.right:
             win.blit(driveRight[self.walkCount//3], (self.x,self.y))
             if self.walkCount < 12:
                 self.walkCount += 1
         else:
-            win.blit(car, (self.x, self.y))
-            
+            win.blit(self.image, (self.x, self.y))
+
     def get_rect(self):
-        # This method returns a pygame.Rect object for the player car
         return pygame.Rect(self.x, self.y, self.width, self.height)
+
+    def create_mask(self, image):
+        """Create a mask for the player car to handle transparency"""
+        return pygame.mask.from_surface(image)

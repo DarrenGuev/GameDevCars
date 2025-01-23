@@ -6,7 +6,7 @@ class GameWindow:
         pygame.init()
         self.width = width
         self.height = height
-        self.win = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN)
+        self.win = pygame.display.set_mode((self.width, self.height), pygame.SRCALPHA)
         pygame.display.set_caption(title)
         self.clock = pygame.time.Clock()
         self.bg_image = pygame.image.load('bg124.png')

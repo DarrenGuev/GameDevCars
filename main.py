@@ -12,6 +12,7 @@ class Obstacle:
         self.height = height
         self.obstacle_speed = 10
         self.image = image
+        self.mask = self.create_mask(image)  # Create mask for the obstacle
 
     def draw(self, win):
         win.blit(self.image, (self.x, self.y))
@@ -19,42 +20,64 @@ class Obstacle:
     def get_rect(self):
         return pygame.Rect(self.x, self.y, self.width, self.height)
 
+    def create_mask(self, image):
+        """Create a mask from the given image to handle transparency"""
+        return pygame.mask.from_surface(image)
+
+def check_collision(player, enemy):
+    """Check for pixel-perfect collision using masks"""
+    player_mask = player.mask
+    enemy_mask = enemy.mask
+
+    # Get the offset between the player and the enemy
+    offset_x = enemy.x - player.x
+    offset_y = enemy.y - player.y
+
+    # Check if the masks overlap (collision)
+    return player_mask.overlap(enemy_mask, (offset_x, offset_y)) is not None
+
 def main():
     game_window = GameWindow(1920, 1080, "Avoid the Obstacle")
-    enemyCar5 = pygame.image.load('enemyCar5.png')
+    enemyCar5 = pygame.image.load('enemyCar5.png').convert_alpha()
     enemyCar5 = pygame.transform.scale(enemyCar5, (40, 70))
-    enemyCar6 = pygame.image.load('enemyCar6.png')
-    enemyCar6 = pygame.transform.scale(enemyCar6, (40, 70))
-    enemyCar8 = pygame.image.load('enemyCar8.png')
+    enemyCar8 = pygame.image.load('enemyCar8.png').convert_alpha()
     enemyCar8 = pygame.transform.scale(enemyCar8, (50, 90))
-    enemyCar9 = pygame.image.load('enemyCar9.png')
+    enemyCar9 = pygame.image.load('enemyCar9.png').convert_alpha()
     enemyCar9 = pygame.transform.scale(enemyCar9, (40, 70))
-    enemyCar10 = pygame.image.load('enemyCar10.png')
+    enemyCar10 = pygame.image.load('enemyCar10.png').convert_alpha()
     enemyCar10 = pygame.transform.scale(enemyCar10, (40, 70))
-    enemyCar11 = pygame.image.load('enemyCar11.png')
+    enemyCar11 = pygame.image.load('enemyCar11.png').convert_alpha()
     enemyCar11 = pygame.transform.scale(enemyCar11, (40, 70))
-    enemyCar12 = pygame.image.load('enemyCar12.png')
+    enemyCar12 = pygame.image.load('enemyCar12.png').convert_alpha()
     enemyCar12 = pygame.transform.scale(enemyCar12, (40, 70))
-    enemyCar13 = pygame.image.load('enemyCar13.png')
+    enemyCar13 = pygame.image.load('enemyCar13.png').convert_alpha()
     enemyCar13 = pygame.transform.scale(enemyCar13, (40, 70))
-    enemyCar14 = pygame.image.load('enemyCar14.png')
+    enemyCar14 = pygame.image.load('enemyCar14.png').convert_alpha()
     enemyCar14 = pygame.transform.scale(enemyCar14, (40, 70))
-    enemyCar15 = pygame.image.load('enemyCar15.png')
-    enemyCar15 = pygame.transform.scale(enemyCar15, (40, 70))
-    enemyCar16 = pygame.image.load('enemyCar16.png')
+    enemyCar16 = pygame.image.load('enemyCar16.png').convert_alpha()
     enemyCar16 = pygame.transform.scale(enemyCar16, (40, 70))
-    enemyCar17 = pygame.image.load('enemyCar17.png')
-    enemyCar17 = pygame.transform.scale(enemyCar17, (40, 70))
-    enemyCar18 = pygame.image.load('enemyCar18.png')
+    enemyCar18 = pygame.image.load('enemyCar18.png').convert_alpha()
     enemyCar18 = pygame.transform.scale(enemyCar18, (40, 70))
-    obstacle_car_images = [enemyCar5,
-                           enemyCar6, enemyCar8, enemyCar9, enemyCar10, enemyCar11, 
-                           enemyCar12, enemyCar13, enemyCar14, enemyCar15, enemyCar16, 
-                           enemyCar17, enemyCar18]
+    enemyCar19 = pygame.image.load('enemyCar19.png').convert_alpha()
+    enemyCar19 = pygame.transform.scale(enemyCar19, (40, 70))
+    enemyCar20 = pygame.image.load('enemyCar20.png').convert_alpha()
+    enemyCar20 = pygame.transform.scale(enemyCar20, (40, 70))
+    enemyCar21 = pygame.image.load('enemyCar21.png').convert_alpha()
+    enemyCar21 = pygame.transform.scale(enemyCar21, (40, 70))
+    enemyCar22 = pygame.image.load('enemyCar22.png').convert_alpha()
+    enemyCar22 = pygame.transform.scale(enemyCar22, (40, 70))
+    enemyCar23 = pygame.image.load('enemyCar23.png').convert_alpha()
+    enemyCar23 = pygame.transform.scale(enemyCar23, (40, 70))
+    enemyCar24 = pygame.image.load('enemyCar24.png').convert_alpha()
+    enemyCar24 = pygame.transform.scale(enemyCar24, (40, 70))
 
+    obstacle_car_images = [enemyCar5, enemyCar8, enemyCar9, enemyCar10, enemyCar11, 
+                           enemyCar12, enemyCar13, enemyCar14, enemyCar16, enemyCar18, enemyCar19, 
+                           enemyCar20, enemyCar21, enemyCar22, enemyCar23, enemyCar24]
+    
     man = player_test(910, 850, 90, 90)
-    collision1 = 810
-    collision2 = 1200
+    collision1 = 830
+    collision2 = 1250
     enemies = [Obstacle(random.randrange(collision1, collision2), -random.randint(0, game_window.height), 90, 90, random.choice(obstacle_car_images)) for _ in range(4)]
     running = True
 
@@ -101,9 +124,10 @@ def main():
                 enemy.y = 0 - enemy.height
                 enemy.x = random.randrange(700, 1100)
                 enemy.image = random.choice(obstacle_car_images)
+                enemy.mask = enemy.create_mask(enemy.image)  # Re-create the mask after resetting image
 
-            # Check for collision between player and enemy
-            if man.get_rect().colliderect(enemy.get_rect()):
+            # Check for pixel-perfect collision between player and enemy using masks
+            if check_collision(man, enemy):
                 print("Collision detected!")
                 running = False  # Stop the game if collision occurs
 
