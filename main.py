@@ -13,7 +13,7 @@ win = pygame.display.set_mode((screen_width, screen_height), pygame.FULLSCREEN)
 pygame.display.set_caption("Avoid the Obstacle")
 
 # Load background
-background_image = pygame.image.load('bg.jpg')
+background_image = pygame.image.load('bg124.png')
 background_width = background_image.get_width()
 background_height = background_image.get_height()
 

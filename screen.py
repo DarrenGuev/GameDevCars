@@ -9,7 +9,7 @@ class GameWindow:
         self.win = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN)
         pygame.display.set_caption(title)
         self.clock = pygame.time.Clock()
-        self.bg_image = pygame.image.load('bg.jpg')
+        self.bg_image = pygame.image.load('bg124.png')
         self.bg_width = self.bg_image.get_width()
         self.bg_height = self.bg_image.get_height()
         self.bg_x = (self.width - self.bg_width) // 2  # Adjusted for centering
