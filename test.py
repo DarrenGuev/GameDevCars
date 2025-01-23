@@ -37,6 +37,7 @@ def check_collision(player, enemy):
     return player_mask.overlap(enemy_mask, (offset_x, offset_y)) is not None
 
 def main():
+    pygame.init()
     game_window = GameWindow(1920, 1080, "Avoid the Obstacle")
     enemyCar5 = pygame.image.load('enemyCar5.png').convert_alpha()
     enemyCar5 = pygame.transform.scale(enemyCar5, (40, 70))
@@ -81,14 +82,14 @@ def main():
     # Main game loop
     while running:
         game_window.clock.tick(30)
-        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
-        
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and man.x > collision1 - man.width - man.vel:
             man.x -= man.vel
@@ -102,7 +103,7 @@ def main():
             man.left = False
             man.right = False
             man.walkCount = 0
-        
+
         game_window.increase_score()
 
         for enemy in enemies:
@@ -126,7 +127,7 @@ def main():
                 enemy.obstacle_speed = min(enemy.obstacle_speed * speed_increase_factor, max_obstacle_speed)
             man.vel = min(man.vel * speed_increase_factor, max_player_speed)
             speed_increase_timer = 0
-        
+
         game_window.redraw_game_window(man, enemies)
 
     pygame.quit()
