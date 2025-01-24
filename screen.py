@@ -40,6 +40,12 @@ class GameWindow:
         text_rect = score_text.get_rect()
         text_rect.center = (1800, 50)
         self.win.blit(score_text, text_rect)
+        
+    def draw_highscore(self, highscore):
+        highscore_text = self.font.render("Highscore: " + str(highscore), True, (255, 255, 255))
+        text_rect = highscore_text.get_rect()
+        text_rect.center = (1800, 100)
+        self.win.blit(highscore_text, text_rect)
 
     def redraw_game_window(self, man, enemies):
         self.win.fill((119, 119, 119))
@@ -48,6 +54,7 @@ class GameWindow:
         for enemy in enemies:
             enemy.draw(self.win)
         self.draw_score()
+        self.draw_highscore(0)
         pygame.display.update()
 
     def increase_score(self):

@@ -127,6 +127,7 @@ def main():
                            enemyCar12, enemyCar13, enemyCar14, enemyCar16, enemyCar18, enemyCar19, 
                            enemyCar20, enemyCar21, enemyCar22, enemyCar23, enemyCar24]
     
+    
     man = player_test(910, 850, 90, 90)
     collision1 = 850
     collision2 = 1250
