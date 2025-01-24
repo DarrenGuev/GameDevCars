@@ -217,7 +217,7 @@ def main():
 
         # Drawing everything
         game_window.redraw_game_window(man, enemies)
-
+        
     pygame.quit()
 
 if __name__ == "__main__":
