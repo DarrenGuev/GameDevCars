@@ -128,9 +128,9 @@ def main():
                            enemyCar20, enemyCar21, enemyCar22, enemyCar23, enemyCar24]
     
     man = player_test(910, 850, 90, 90)
-    collision1 = 830
+    collision1 = 850
     collision2 = 1250
-    enemies = [Obstacle(random.randrange(collision1, collision2), -random.randint(0, game_window.height), 90, 90, random.choice(obstacle_car_images)) for _ in range(5)]
+    enemies = [Obstacle(random.randrange(720, collision2), -random.randint(0, game_window.height), 90, 90, random.choice(obstacle_car_images)) for _ in range(5)]
     running = True
 
     # Timer for speed increase
@@ -178,7 +178,7 @@ def main():
 
                 # Randomize x-position within the highway bounds while ensuring no overlap with other enemies
                 while True:
-                    new_x = random.randrange(collision1, collision2 - enemy.width)
+                    new_x = random.randrange(720, collision2 - enemy.width)
                     enemy.x = new_x
                     overlap = False
 
@@ -196,8 +196,8 @@ def main():
                 enemy.mask = enemy.create_mask(enemy.image)
                 
             # Ensure the enemy stays within the highway boundaries
-            if enemy.x < collision1:
-                enemy.x = collision1
+            if enemy.x < 720:
+                enemy.x = 720
             elif enemy.x + enemy.width > collision2:
                 enemy.x = collision2 - enemy.width
 

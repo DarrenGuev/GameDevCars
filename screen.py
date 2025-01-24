@@ -38,7 +38,7 @@ class GameWindow:
     def draw_score(self):
         score_text = self.font.render("Score: " + str(self.score), True, (255, 255, 255))
         text_rect = score_text.get_rect()
-        text_rect.center = (950, 50)
+        text_rect.center = (1800, 50)
         self.win.blit(score_text, text_rect)
 
     def redraw_game_window(self, man, enemies):
