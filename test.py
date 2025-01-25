@@ -76,7 +76,6 @@ def main():
     pygame.init()
     game_window = GameWindow(1920, 1080, "Avoid the Obstacle")
 
-    display_menu(game_window.win, game_window.width, game_window.height)
 
     enemy_images = [pygame.image.load(f'enemyCar{i}.png').convert_alpha() for i in range(5, 19)]
     enemy_images = [pygame.transform.scale(img, (40, 70)) for img in enemy_images]

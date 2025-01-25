@@ -84,10 +84,17 @@ def game_over_menu(win, width, height):
     # Capture the current game screen (screenshot)
     game_screenshot = win.copy()  # Copy the current display surface
 
+        # Load the image you want to display at the center
+    center_image = pygame.image.load('GameOver.png')
+    center_image_rect = center_image.get_rect(center=(width // 2, height // 2))
+
     # Show the menu using the game screenshot as the background
     running = True
     while running:
         win.blit(game_screenshot, (0, 0))  # Display the screenshot as the background
+
+        win.blit(center_image, center_image_rect.topleft)
+
 
         # Define your button sizes and positions
         restart_button = pygame.Rect(width // 2 - 100, height // 2 - 50, 200, 50)
@@ -178,11 +185,11 @@ def main():
         
         # Timer for speed increase
         speed_increase_timer = 0
-        speed_increase_interval = 10  # Increase speed interval
-        speed_increase_factor = 1.0005  # Increase speed by 5% every interval
+        speed_increase_interval = 20  # Increase speed interval
+        speed_increase_factor = 1.00025  # Increase speed by 5% every interval
         max_scroll_speed = 40
         max_obstacle_speed = 60
-        max_player_speed = 20
+        max_player_speed = 30
 
         # Game loop for running the game
         while running:
