@@ -170,10 +170,10 @@ def main():
     
       # Main outer game loop
     while True:
-        man = player_test(910, 850, 90, 90)
+        man = player_test(935, 850, 90, 90)
         collision1 = 850
         collision2 = 1250
-        enemies = [Obstacle(random.randrange(720, collision2), -random.randint(0, game_window.height), 90, 90, random.choice(obstacle_car_images)) for _ in range(5)]
+        enemies = [Obstacle(random.randrange(720, 1190), -random.randint(0, game_window.height), 90, 90, random.choice(obstacle_car_images)) for _ in range(5)]
         running = True
         
         # Timer for speed increase
@@ -228,7 +228,7 @@ def main():
                                 break
                         if not overlap:
                             break
-                    enemy.image = random.choice(obstacle_car_images)
+                    enemy.image  = random.choice(obstacle_car_images)
                     enemy.mask = enemy.create_mask(enemy.image)
 
                 if check_collision(man, enemy):
@@ -249,7 +249,10 @@ def main():
             if not running:
                 result = game_over_menu(game_window.win, game_window.width, game_window.height)
                 if result == "RESTART":
-                    running = True  # Set running to True to restart the loop
+                    running = True  # Set running to True to restart the loop/]
+                    speed_increase_timer = 0
+                    game_window.scroll_speed = 15
+                    game_window.score = 0
                     break  # Break this loop to restart the game
                 elif result == "QUIT":
                     pygame.quit()
