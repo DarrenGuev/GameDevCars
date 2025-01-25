@@ -56,8 +56,8 @@ def display_menu(win, width, height):
         win.blit(title_text, (width // 2 - title_text.get_width() // 2, height // 1.60))
 
         # Draw buttons
-        pygame.draw.rect(win, (0, 255, 0), start_button)  # Green button for Start
-        pygame.draw.rect(win, (255, 0, 0), quit_button)  # Red button for Quit
+        pygame.draw.rect(win, (144, 238, 144), start_button)  # Green button for Start
+        pygame.draw.rect(win, (144, 238, 144), quit_button)  # Red button for Quit
 
         # Button text
         start_text = font.render("Start", True, (0, 0, 0))
@@ -101,13 +101,13 @@ def game_over_menu(win, width, height):
         quit_button = pygame.Rect(width // 2 - 100, height // 2 + 12, 200, 50)
 
         # Draw buttons with transparent color over the background
-        pygame.draw.rect(win, (255, 0, 0), restart_button)  # Red button for restart
-        pygame.draw.rect(win, (0, 0, 255), quit_button)     # Blue button for quit
+        pygame.draw.rect(win, (144, 238, 144), restart_button)  # Red button for restart
+        pygame.draw.rect(win, (144, 238, 144), quit_button)     # Blue button for quit
 
         # Add text to the buttons
         font = pygame.font.SysFont(None, 60)
-        restart_text = font.render("Restart", True, (255, 255, 255))
-        quit_text = font.render("Quit", True, (255, 255, 255))
+        restart_text = font.render("Restart", True, (0, 0, 0))
+        quit_text = font.render("Quit", True, (0, 0, 0))
         
         # Draw text on buttons
         win.blit(restart_text, (restart_button.x + 30, restart_button.y + 10))
