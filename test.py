@@ -3,6 +3,7 @@ import sys
 from car_test import player_test
 import random
 from screen import GameWindow
+from screen import HighscoreManager
 
 class Obstacle:
     def __init__(self, x, y, width, height, image):
@@ -84,19 +85,22 @@ def display_menu(win, width, height):
                     sys.exit()
     
 
-def game_over_menu(win, width, height):
+def game_over_menu(win, width, height, current_score):
     # Capture the current game screen (screenshot)
     game_screenshot = win.copy()  # Copy the current display surface
 
     # Load the image you want to display at the center
     center_image = pygame.image.load('GameOver.png')
     center_image_rect = center_image.get_rect(center=(width // 2, height // 2))
+    
+    # Initialize HighscoreManager and update highscores
+    highscore_manager = HighscoreManager()
+    highscore_manager.update_highscores(current_score)
 
     # Show the menu using the game screenshot as the background
     running = True
     while running:
         win.blit(game_screenshot, (0, 0))  # Display the screenshot as the background
-
         win.blit(center_image, center_image_rect.topleft)
 
         # Define your button sizes and positions
@@ -115,6 +119,8 @@ def game_over_menu(win, width, height):
         # Draw text on buttons
         win.blit(restart_text, (restart_button.x + 30, restart_button.y + 10))
         win.blit(quit_text, (quit_button.x + 55, quit_button.y + 10))
+        # Display highscores in the center of the screen
+        highscore_manager.display_highscores(win, font, width, height)
 
         # Update the display to show the buttons
         pygame.display.update()
@@ -310,7 +316,7 @@ def main():
             game_window.redraw_game_window(man, enemies)
 
             if not running:
-                result = game_over_menu(game_window.win, game_window.width, game_window.height)
+                result = game_over_menu(game_window.win, game_window.width, game_window.height, current_score=game_window.score)
                 if result == "RESTART":
                     running = True  # Set running to True to restart the loop/]
                     pygame.mixer.music.load('0126.mp3')
