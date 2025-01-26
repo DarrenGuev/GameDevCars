@@ -1,5 +1,6 @@
 import pygame
 import sys
+import os
 from car_test import player_test
 import random
 from screen import GameWindow
@@ -49,7 +50,7 @@ def display_menu(win, width, height):
     start_button = pygame.Rect(width // 2 - 100, height // 2 + 230, 200, 50)  # Adjusted y coordinate
     quit_button = pygame.Rect(width // 2 - 100, height // 2 + 300, 200, 50)  # Adjusted y coordinate
     background = pygame.image.load('background.png')
-
+    
 
     while True:
         win.blit(background, (0,0))
@@ -68,7 +69,7 @@ def display_menu(win, width, height):
                              quit_button.y + quit_button.height // 2 - quit_text.get_height() // 2))
 
         pygame.display.update()
-
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -131,8 +132,10 @@ def game_over_menu(win, width, height):
 
 def main():
     pygame.init()
+    
     game_window = GameWindow(1920, 1080, "Avoid the Obstacle")
     
+
     # Display the menu
     display_menu(game_window.win, game_window.width, game_window.height)
     
@@ -174,7 +177,9 @@ def main():
     obstacle_car_images = [enemyCar5, enemyCar8, enemyCar9, enemyCar10, enemyCar11, 
                            enemyCar12, enemyCar13, enemyCar14, enemyCar16, enemyCar18, enemyCar19, 
                            enemyCar20, enemyCar21, enemyCar22, enemyCar23, enemyCar24]
-    
+    pygame.mixer.music.load('feel_it.mp3')
+    pygame.mixer.music.play(-1)
+
       # Main outer game loop
     while True:
         man = player_test(935, 850, 90, 90)
@@ -199,9 +204,11 @@ def main():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                    
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         running = False
+
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_LEFT] and man.x > collision1 - man.width - man.vel:
@@ -241,6 +248,8 @@ def main():
                 if check_collision(man, enemy):
                     print("Collision detected!")
                     running = False  # Stop the game when collision occurs
+                    pygame.mixer.music.load('car_crash.MP3')
+                    pygame.mixer.music.play(0)
 
             speed_increase_timer += game_window.clock.get_time()
             if speed_increase_timer >= speed_increase_interval:
