@@ -50,6 +50,8 @@ def display_menu(win, width, height):
     start_button = pygame.Rect(width // 2 - 100, height // 2 + 230, 200, 50)  # Adjusted y coordinate
     quit_button = pygame.Rect(width // 2 - 100, height // 2 + 300, 200, 50)  # Adjusted y coordinate
     background = pygame.image.load('background.png')
+    pygame.mixer.music.load('feel_it.mp3')
+    pygame.mixer.music.play(-1)
     
 
     while True:
@@ -81,6 +83,7 @@ def display_menu(win, width, height):
                 elif quit_button.collidepoint(mouse_pos):
                     pygame.quit()
                     sys.exit()
+    
 
 def game_over_menu(win, width, height):
     # Capture the current game screen (screenshot)
@@ -218,7 +221,7 @@ def main():
     obstacle_car_images = [enemyCar5, enemyCar8, enemyCar9, enemyCar10, enemyCar11, 
                            enemyCar12, enemyCar13, enemyCar14, enemyCar16, enemyCar18, enemyCar19, 
                            enemyCar20, enemyCar21, enemyCar22, enemyCar23, enemyCar24]
-    pygame.mixer.music.load('feel_it.mp3')
+    pygame.mixer.music.load('0126.mp3')
     pygame.mixer.music.play(-1)
 
     # Main outer game loop
@@ -307,7 +310,7 @@ def main():
                 result = game_over_menu(game_window.win, game_window.width, game_window.height)
                 if result == "RESTART":
                     running = True  # Set running to True to restart the loop/]
-                    pygame.mixer.music.load('feel_it.mp3')
+                    pygame.mixer.music.load('0126.mp3')
                     pygame.mixer.music.play(-1)
                     speed_increase_timer = 0
                     game_window.scroll_speed = 15

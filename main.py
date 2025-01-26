@@ -1,5 +1,6 @@
 import pygame
 import sys
+import os
 from car_test import player_test
 import random
 from screen import GameWindow
@@ -49,15 +50,17 @@ def display_menu(win, width, height):
     start_button = pygame.Rect(width // 2 - 100, height // 2 + 230, 200, 50)  # Adjusted y coordinate
     quit_button = pygame.Rect(width // 2 - 100, height // 2 + 300, 200, 50)  # Adjusted y coordinate
     background = pygame.image.load('background.png')
-
+    pygame.mixer.music.load('feel_it.mp3')
+    pygame.mixer.music.play(-1)
+    
 
     while True:
         win.blit(background, (0,0))
         win.blit(title_text, (width // 2 - title_text.get_width() // 2, height // 1.60))
 
         # Draw buttons
-        pygame.draw.rect(win, (0, 255, 0), start_button)  # Green button for Start
-        pygame.draw.rect(win, (255, 0, 0), quit_button)  # Red button for Quit
+        pygame.draw.rect(win, (144, 238, 144), start_button)  # Green button for Start
+        pygame.draw.rect(win, (144, 238, 144), quit_button)  # Red button for Quit
 
         # Button text
         start_text = font.render("Start", True, (0, 0, 0))
@@ -68,7 +71,7 @@ def display_menu(win, width, height):
                              quit_button.y + quit_button.height // 2 - quit_text.get_height() // 2))
 
         pygame.display.update()
-
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -80,9 +83,102 @@ def display_menu(win, width, height):
                 elif quit_button.collidepoint(mouse_pos):
                     pygame.quit()
                     sys.exit()
+    
+
+def game_over_menu(win, width, height):
+    # Capture the current game screen (screenshot)
+    game_screenshot = win.copy()  # Copy the current display surface
+
+    # Load the image you want to display at the center
+    center_image = pygame.image.load('GameOver.png')
+    center_image_rect = center_image.get_rect(center=(width // 2, height // 2))
+
+    # Show the menu using the game screenshot as the background
+    running = True
+    while running:
+        win.blit(game_screenshot, (0, 0))  # Display the screenshot as the background
+
+        win.blit(center_image, center_image_rect.topleft)
+
+        # Define your button sizes and positions
+        restart_button = pygame.Rect(width // 2 - 100, height // 2 - 50, 200, 50)
+        quit_button = pygame.Rect(width // 2 - 100, height // 2 + 12, 200, 50)
+
+        # Draw buttons with transparent color over the background
+        pygame.draw.rect(win, (144, 238, 144), restart_button)  # Red button for restart
+        pygame.draw.rect(win, (144, 238, 144), quit_button)     # Blue button for quit
+
+        # Add text to the buttons
+        font = pygame.font.SysFont(None, 60)
+        restart_text = font.render("Restart", True, (0, 0, 0))
+        quit_text = font.render("Quit", True, (0, 0, 0))
+        
+        # Draw text on buttons
+        win.blit(restart_text, (restart_button.x + 30, restart_button.y + 10))
+        win.blit(quit_text, (quit_button.x + 55, quit_button.y + 10))
+
+        # Update the display to show the buttons
+        pygame.display.update()
+
+        # Handle events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if restart_button.collidepoint(event.pos):
+                    return "RESTART"  # Return "restart" when the restart button is clicked
+                elif quit_button.collidepoint(event.pos):
+                    return "QUIT"  # Return "quit" when the quit button is clicked
+
+def pause_game(win, width, height):
+    """Pause the game and display a pause menu"""
+    game_screenshot = win.copy()
+    pygame.mixer.music.pause()  # Pause the music
+    font = pygame.font.Font(None, 74)
+    pause_text = font.render("Paused", True, (255, 255, 255))
+    resume_button = pygame.Rect(width // 2 - 100, height // 2 - 50, 200, 50)
+    quit_button = pygame.Rect(width // 2 - 100, height // 2 + 50, 200, 50)
+
+    while True:
+        win.blit(game_screenshot, (0, 0))  # Display the screenshot as the background
+        win.blit(pause_text, (width // 2 - pause_text.get_width() // 2, height // 4))
+
+        # Draw buttons
+        pygame.draw.rect(win, (0, 255, 0), resume_button)  # Green Resume button
+        pygame.draw.rect(win, (255, 0, 0), quit_button)  # Red Quit button
+
+        # Button text
+        resume_text = font.render("Resume", True, (0, 0, 0))
+        quit_text = font.render("Quit", True, (0, 0, 0))
+        win.blit(resume_text, (resume_button.x + resume_button.width // 2 - resume_text.get_width() // 2,
+                               resume_button.y + resume_button.height // 2 - resume_text.get_height() // 2))
+        win.blit(quit_text, (quit_button.x + quit_button.width // 2 - quit_text.get_width() // 2,
+                             quit_button.y + quit_button.height // 2 - quit_text.get_height() // 2))
+
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    pygame.mixer.music.unpause()  # Resume the music
+                    return  # Resume the game
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                if resume_button.collidepoint(mouse_pos):
+                    pygame.mixer.music.unpause()  # Resume the music
+                    return  # Resume the game
+                elif quit_button.collidepoint(mouse_pos):
+                    pygame.quit()
+                    sys.exit()
 
 def main():
     pygame.init()
+    
     game_window = GameWindow(1920, 1080, "Avoid the Obstacle")
     
     # Display the menu
@@ -122,103 +218,107 @@ def main():
     enemyCar24 = pygame.image.load('enemyCar24.png').convert_alpha()
     enemyCar24 = pygame.transform.scale(enemyCar24, (40, 70))
 
-
     obstacle_car_images = [enemyCar5, enemyCar8, enemyCar9, enemyCar10, enemyCar11, 
                            enemyCar12, enemyCar13, enemyCar14, enemyCar16, enemyCar18, enemyCar19, 
                            enemyCar20, enemyCar21, enemyCar22, enemyCar23, enemyCar24]
-    
-    
-    man = player_test(910, 850, 90, 90)
-    collision1 = 850
-    collision2 = 1250
-    enemies = [Obstacle(random.randrange(720, collision2), -random.randint(0, game_window.height), 90, 90, random.choice(obstacle_car_images)) for _ in range(5)]
-    running = True
+    pygame.mixer.music.load('0126.mp3')
+    pygame.mixer.music.play(-1)
 
-    # Timer for speed increase
-    speed_increase_timer = 0
-    speed_increase_interval = 10  # Increase speed
-    speed_increase_factor = 1.0005  # Increase speed by 5% every interval
-
-        # Speed limits
-    max_scroll_speed = 40
-    max_obstacle_speed = 60
-    max_player_speed = 20
-    
-    # Main game loop
-    while running:
-        game_window.clock.tick(30)
+    # Main outer game loop
+    while True:
+        man = player_test(935, 850, 90, 90)
+        collision1 = 850
+        collision2 = 1250
+        enemies = [Obstacle(random.randrange(720, 1190), -random.randint(0, game_window.height), 90, 90, random.choice(obstacle_car_images)) for _ in range(5)]
+        running = True
         
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    running = False
-        
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT] and man.x > collision1 - man.width - man.vel:
-            man.x -= man.vel
-            man.left = True
-            man.right = False
-        elif keys[pygame.K_RIGHT] and man.x < collision2 - man.width - man.vel:
-            man.x += man.vel
-            man.left = False
-            man.right = True
-        else:
-            man.left = False
-            man.right = False
-            man.walkCount = 0
-        
-        game_window.increase_score()
+        # Timer for speed increase
+        speed_increase_timer = 0
+        speed_increase_interval = 20  # Increase speed interval
+        speed_increase_factor = 1.00025  # Increase speed by 5% every interval
+        max_scroll_speed = 40
+        max_obstacle_speed = 60
+        max_player_speed = 30
 
-        for enemy in enemies:
-            enemy.y += enemy.obstacle_speed
-            if enemy.y > game_window.height:
-                # Reset the enemy position to the top
-                enemy.y = 0 - enemy.height
+        # Game loop for running the game
+        while running:
+            game_window.clock.tick(30)
 
-                # Randomize x-position within the highway bounds while ensuring no overlap with other enemies
-                while True:
-                    new_x = random.randrange(720, collision2 - enemy.width)
-                    enemy.x = new_x
-                    overlap = False
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                    
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        running = False
+                    elif event.key == pygame.K_SPACE:
+                        pause_game(game_window.win, game_window.width, game_window.height)
 
-                    # Check if this new x-position overlaps with any other enemies
-                    for other_enemy in enemies:
-                        if other_enemy != enemy and is_overlapping(enemy, other_enemy):
-                            overlap = True
-                            break
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_LEFT] and man.x > collision1 - man.width - man.vel:
+                man.x -= man.vel
+                man.left = True
+                man.right = False
+            elif keys[pygame.K_RIGHT] and man.x < collision2 - man.width - man.vel:
+                man.x += man.vel
+                man.left = False
+                man.right = True
+            else:
+                man.left = False
+                man.right = False
+                man.walkCount = 0
 
-                    if not overlap:
-                        break  # Exit loop if no overlap is found
+            game_window.increase_score()
 
-                # Reset the image and mask
-                enemy.image = random.choice(obstacle_car_images)
-                enemy.mask = enemy.create_mask(enemy.image)
-                
-            # Ensure the enemy stays within the highway boundaries
-            if enemy.x < 720:
-                enemy.x = 720
-            elif enemy.x + enemy.width > collision2:
-                enemy.x = collision2 - enemy.width
-
-            # Check for pixel-perfect collision between player and enemy using masks
-            if check_collision(man, enemy):
-                print("Collision detected!")
-                running = False  # Stop the game if collision occurs
-                
-        speed_increase_timer += game_window.clock.get_time()
-        if speed_increase_timer >= speed_increase_interval:
-            game_window.scroll_speed = min(game_window.scroll_speed * speed_increase_factor, max_scroll_speed)
             for enemy in enemies:
-                enemy.obstacle_speed = min(enemy.obstacle_speed * speed_increase_factor, max_obstacle_speed)
-            man.vel = min(man.vel * speed_increase_factor, max_player_speed)
-            speed_increase_timer = 0
+                enemy.y += enemy.obstacle_speed
+                if enemy.y > game_window.height:
+                    # Reset the enemy position to the top
+                    enemy.y = 0 - enemy.height
+                    # Randomize x-position and ensure no overlap with others
+                    while True:
+                        new_x = random.randrange(720, collision2 - enemy.width)
+                        enemy.x = new_x
+                        overlap = False
+                        for other_enemy in enemies:
+                            if other_enemy != enemy and is_overlapping(enemy, other_enemy):
+                                overlap = True
+                                break
+                        if not overlap:
+                            break
+                    enemy.image  = random.choice(obstacle_car_images)
+                    enemy.mask = enemy.create_mask(enemy.image)
 
-        # Drawing everything
-        game_window.redraw_game_window(man, enemies)
+                if check_collision(man, enemy):
+                    running = False  # Stop the game when collision occurs
+                    pygame.mixer.music.load('car_crash.MP3')
+                    pygame.mixer.music.play(0)
+
+            speed_increase_timer += game_window.clock.get_time()
+            if speed_increase_timer >= speed_increase_interval:
+                game_window.scroll_speed = min(game_window.scroll_speed * speed_increase_factor, max_scroll_speed)
+                for enemy in enemies:
+                    enemy.obstacle_speed = min(enemy.obstacle_speed * speed_increase_factor, max_obstacle_speed)
+                man.vel = min(man.vel * speed_increase_factor, max_player_speed)
+                speed_increase_timer = 0
+
+            # Draw everything
+            game_window.redraw_game_window(man, enemies)
+
+            if not running:
+                result = game_over_menu(game_window.win, game_window.width, game_window.height)
+                if result == "RESTART":
+                    running = True  # Set running to True to restart the loop/]
+                    pygame.mixer.music.load('0126.mp3')
+                    pygame.mixer.music.play(-1)
+                    speed_increase_timer = 0
+                    game_window.scroll_speed = 15
+                    game_window.score = 0
+                    break  # Break this loop to restart the game
+                elif result == "QUIT":
+                    pygame.quit()
+                    sys.exit()
         
-    pygame.quit()
-
 if __name__ == "__main__":
     main()
