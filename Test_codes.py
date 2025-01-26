@@ -266,6 +266,8 @@ def main():
                 result = game_over_menu(game_window.win, game_window.width, game_window.height)
                 if result == "RESTART":
                     running = True  # Set running to True to restart the loop/]
+                    pygame.mixer.music.load('feel_it.mp3')
+                    pygame.mixer.music.play(-1)
                     speed_increase_timer = 0
                     game_window.scroll_speed = 15
                     game_window.score = 0
