@@ -75,8 +75,8 @@ class HighscoreManager:
     def display_highscores(self, win, font, width, height):
         """Display highscores in the center of the screen"""
         highscore_text = font.render("Top 5 Highscores:", True, (255, 255, 255))
-        win.blit(highscore_text, (10,10))
+        win.blit(highscore_text, (50, 90))
 
         for i, score in enumerate(self.highscores):
             highscore_entry = font.render(f"{i + 1}. {score}", True, (255, 255, 255))
-            win.blit(highscore_entry, (10, 50 + i * 50))
+            win.blit(highscore_entry, (50, 140 + i * 65))

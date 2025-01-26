@@ -92,6 +92,8 @@ def game_over_menu(win, width, height, current_score):
     # Load the image you want to display at the center
     center_image = pygame.image.load('GameOver.png')
     center_image_rect = center_image.get_rect(center=(width // 2, height // 2))
+    leaderboard = pygame.image.load('leaderboard.png')
+    leaderboard_rect = leaderboard.get_rect(topleft=(0, 0))    
     
     # Initialize HighscoreManager and update highscores
     highscore_manager = HighscoreManager()
@@ -102,6 +104,7 @@ def game_over_menu(win, width, height, current_score):
     while running:
         win.blit(game_screenshot, (0, 0))  # Display the screenshot as the background
         win.blit(center_image, center_image_rect.topleft)
+        win.blit(leaderboard, leaderboard_rect.topleft)
 
         # Define your button sizes and positions
         restart_button = pygame.Rect(width // 2 - 100, height // 2 - 50, 200, 50)
