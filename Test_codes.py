@@ -50,6 +50,9 @@ def display_menu(win, width, height):
     start_button = pygame.Rect(width // 2 - 100, height // 2 + 230, 200, 50)  # Adjusted y coordinate
     quit_button = pygame.Rect(width // 2 - 100, height // 2 + 300, 200, 50)  # Adjusted y coordinate
     background = pygame.image.load('background.png')
+    pygame.mixer.music.load('feel_it.mp3')
+    pygame.mixer.music.play(0)
+
     
 
     while True:
@@ -77,10 +80,25 @@ def display_menu(win, width, height):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 if start_button.collidepoint(mouse_pos):
+                    pygame.mixer.music.stop()
+                    pygame.mixer.music.load('act_a_fool.mp3')
+                    pygame.mixer.music.play(-1)
                     return  # Start the game
                 elif quit_button.collidepoint(mouse_pos):
                     pygame.quit()
                     sys.exit()
+
+def background_music1():
+    pygame.mixer.music.stop()
+    pygame.mixer.music.load ('act_a_fool.mp3', 'feel_it.mp3')
+    pygame.mixer.music.play(0)
+    pygame.mixer.music.set_volume(0.1)
+
+def sfx1():
+    pygame.mixer.music.stop()
+    pygame.mixer.music.load('feel_it.mp3')
+    pygame.mixer.music.play(0)
+
 def game_over_menu(win, width, height):
     # Capture the current game screen (screenshot)
     game_screenshot = win.copy()  # Copy the current display surface
@@ -177,8 +195,7 @@ def main():
     obstacle_car_images = [enemyCar5, enemyCar8, enemyCar9, enemyCar10, enemyCar11, 
                            enemyCar12, enemyCar13, enemyCar14, enemyCar16, enemyCar18, enemyCar19, 
                            enemyCar20, enemyCar21, enemyCar22, enemyCar23, enemyCar24]
-    pygame.mixer.music.load('feel_it.mp3')
-    pygame.mixer.music.play(-1)
+    
 
       # Main outer game loop
     while True:
@@ -190,15 +207,15 @@ def main():
         
         # Timer for speed increase
         speed_increase_timer = 0
-        speed_increase_interval = 20  # Increase speed interval
-        speed_increase_factor = 1.00025  # Increase speed by 5% every interval
+        speed_increase_interval = 200  # Increase speed interval
+        speed_increase_factor = 1.003  # Increase speed by 5% every interval
         max_scroll_speed = 40
         max_obstacle_speed = 60
         max_player_speed = 30
 
         # Game loop for running the game
         while running:
-            game_window.clock.tick(30)
+            game_window.clock.tick(27)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -247,9 +264,8 @@ def main():
 
                 if check_collision(man, enemy):
                     print("Collision detected!")
-                    running = False  # Stop the game when collision occurs
-                    pygame.mixer.music.load('car_crash.MP3')
-                    pygame.mixer.music.play(0)
+                    # running = False  # Stop the game when collision occurs
+                    # sfx1()
 
             speed_increase_timer += game_window.clock.get_time()
             if speed_increase_timer >= speed_increase_interval:
@@ -266,8 +282,7 @@ def main():
                 result = game_over_menu(game_window.win, game_window.width, game_window.height)
                 if result == "RESTART":
                     running = True  # Set running to True to restart the loop/]
-                    pygame.mixer.music.load('feel_it.mp3')
-                    pygame.mixer.music.play(-1)
+                    background_music1()
                     speed_increase_timer = 0
                     game_window.scroll_speed = 15
                     game_window.score = 0

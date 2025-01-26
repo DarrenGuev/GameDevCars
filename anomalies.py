@@ -3,8 +3,10 @@ from screen import GameWindow
 from Test_codes import display_menu
 pygame.init()
 
+# WALANG KWENTA FILE NA TO
 
-class Anomaly:
+
+class ObstacleImages:
     game_window = GameWindow(1920, 1080, "Avoid the Obstacle")
     
     display_menu(game_window.win, game_window.width, game_window.height)
