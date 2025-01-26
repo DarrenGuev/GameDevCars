@@ -1,6 +1,5 @@
 import pygame
 import sys
-import os
 from car_test import player_test
 import random
 from screen import GameWindow
@@ -135,19 +134,23 @@ def game_over_menu(win, width, height):
 def pause_game(win, width, height):
     """Pause the game and display a pause menu"""
     game_screenshot = win.copy()
+    center_image = pygame.image.load('pause.png')
+    center_image_rect = center_image.get_rect(center=(width // 2, height // 2))
     pygame.mixer.music.pause()  # Pause the music
     font = pygame.font.Font(None, 74)
     pause_text = font.render("Paused", True, (255, 255, 255))
-    resume_button = pygame.Rect(width // 2 - 100, height // 2 - 50, 200, 50)
-    quit_button = pygame.Rect(width // 2 - 100, height // 2 + 50, 200, 50)
+    resume_button = pygame.Rect(width // 2 - 100, height // 2 + 40, 200, 50)
+    quit_button = pygame.Rect(width // 2 - 100, height // 2 + 100, 200, 50)
 
     while True:
         win.blit(game_screenshot, (0, 0))  # Display the screenshot as the background
         win.blit(pause_text, (width // 2 - pause_text.get_width() // 2, height // 4))
+        win.blit(center_image, center_image_rect.topleft)
+
 
         # Draw buttons
-        pygame.draw.rect(win, (0, 255, 0), resume_button)  # Green Resume button
-        pygame.draw.rect(win, (255, 0, 0), quit_button)  # Red Quit button
+        pygame.draw.rect(win, (144, 238, 144), resume_button)  # Green Resume button
+        pygame.draw.rect(win, (144, 238, 144), quit_button)  # Red Quit button
 
         # Button text
         resume_text = font.render("Resume", True, (0, 0, 0))
