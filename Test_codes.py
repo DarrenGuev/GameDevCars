@@ -264,8 +264,8 @@ def main():
 
                 if check_collision(man, enemy):
                     print("Collision detected!")
-                    # running = False  # Stop the game when collision occurs
-                    # sfx1()
+                    running = False  # Stop the game when collision occurs
+                    sfx1()
 
             speed_increase_timer += game_window.clock.get_time()
             if speed_increase_timer >= speed_increase_interval:
