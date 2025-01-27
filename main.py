@@ -1,9 +1,9 @@
 import pygame
 import sys
-import os
 from car_test import player_test
 import random
 from screen import GameWindow
+from screen import HighscoreManager
 
 class Obstacle:
     def __init__(self, x, y, width, height, image):
@@ -47,16 +47,21 @@ def display_menu(win, width, height):
     """Display a start menu with Start and Quit buttons"""
     font = pygame.font.Font(None, 74)
     title_text = font.render("Avoid the Obstacle", True, (0, 0, 0))
-    start_button = pygame.Rect(width // 2 - 100, height // 2 + 230, 200, 50)  # Adjusted y coordinate
-    quit_button = pygame.Rect(width // 2 - 100, height // 2 + 300, 200, 50)  # Adjusted y coordinate
+    start_button = pygame.Rect(width // 2 - 100, height // 2 + 230, 200, 50)
     background = pygame.image.load('background.png')
+    quit_button = pygame.Rect(width // 2 - 100, height // 2 + 300, 200, 50)
     pygame.mixer.music.load('feel_it.mp3')
     pygame.mixer.music.play(-1)
-    
+    instructions = pygame.image.load('instructions.png')
+    corner_image_rect = instructions.get_rect()
+    corner_image_rect.topleft = (0, height - instructions.get_height())
+    pygame.display.update()
 
     while True:
         win.blit(background, (0,0))
         win.blit(title_text, (width // 2 - title_text.get_width() // 2, height // 1.60))
+        
+        win.blit(instructions, corner_image_rect)
 
         # Draw buttons
         pygame.draw.rect(win, (144, 238, 144), start_button)  # Green button for Start
@@ -85,20 +90,26 @@ def display_menu(win, width, height):
                     sys.exit()
     
 
-def game_over_menu(win, width, height):
+def game_over_menu(win, width, height, current_score):
     # Capture the current game screen (screenshot)
     game_screenshot = win.copy()  # Copy the current display surface
 
     # Load the image you want to display at the center
     center_image = pygame.image.load('GameOver.png')
     center_image_rect = center_image.get_rect(center=(width // 2, height // 2))
+    leaderboard = pygame.image.load('leaderboard.png')
+    leaderboard_rect = leaderboard.get_rect(topleft=(0, 0))    
+    
+    # Initialize HighscoreManager and update highscores
+    highscore_manager = HighscoreManager()
+    highscore_manager.update_highscores(current_score)
 
     # Show the menu using the game screenshot as the background
     running = True
     while running:
         win.blit(game_screenshot, (0, 0))  # Display the screenshot as the background
-
         win.blit(center_image, center_image_rect.topleft)
+        win.blit(leaderboard, leaderboard_rect.topleft)
 
         # Define your button sizes and positions
         restart_button = pygame.Rect(width // 2 - 100, height // 2 - 50, 200, 50)
@@ -116,6 +127,8 @@ def game_over_menu(win, width, height):
         # Draw text on buttons
         win.blit(restart_text, (restart_button.x + 30, restart_button.y + 10))
         win.blit(quit_text, (quit_button.x + 55, quit_button.y + 10))
+        # Display highscores in the center of the screen
+        highscore_manager.display_highscores(win, font, width, height)
 
         # Update the display to show the buttons
         pygame.display.update()
@@ -135,19 +148,23 @@ def game_over_menu(win, width, height):
 def pause_game(win, width, height):
     """Pause the game and display a pause menu"""
     game_screenshot = win.copy()
+    center_image = pygame.image.load('pause.png')
+    center_image_rect = center_image.get_rect(center=(width // 2, height // 2))
     pygame.mixer.music.pause()  # Pause the music
     font = pygame.font.Font(None, 74)
-    pause_text = font.render("Paused", True, (255, 255, 255))
-    resume_button = pygame.Rect(width // 2 - 100, height // 2 - 50, 200, 50)
-    quit_button = pygame.Rect(width // 2 - 100, height // 2 + 50, 200, 50)
+    pause_text = font.render("[PRESS SPACEBAR TO RESUME THE GAME]", True, (255, 255, 255))
+    resume_button = pygame.Rect(width // 2 - 100, height // 2 + 40, 200, 50)
+    quit_button = pygame.Rect(width // 2 - 100, height // 2 + 100, 200, 50)
 
     while True:
         win.blit(game_screenshot, (0, 0))  # Display the screenshot as the background
-        win.blit(pause_text, (width // 2 - pause_text.get_width() // 2, height // 4))
+        win.blit(pause_text, (width // 2 - pause_text.get_width() // 2, height // 10))
+        win.blit(center_image, center_image_rect.topleft)
+
 
         # Draw buttons
-        pygame.draw.rect(win, (0, 255, 0), resume_button)  # Green Resume button
-        pygame.draw.rect(win, (255, 0, 0), quit_button)  # Red Quit button
+        pygame.draw.rect(win, (144, 238, 144), resume_button)  # Green Resume button
+        pygame.draw.rect(win, (144, 238, 144), quit_button)  # Red Quit button
 
         # Button text
         resume_text = font.render("Resume", True, (0, 0, 0))
@@ -195,8 +212,8 @@ def main():
     enemyCar10 = pygame.transform.scale(enemyCar10, (40, 70))
     enemyCar11 = pygame.image.load('enemyCar11.png').convert_alpha()
     enemyCar11 = pygame.transform.scale(enemyCar11, (40, 70))
-    enemyCar12 = pygame.image.load('enemyCar12.png').convert_alpha()
-    enemyCar12 = pygame.transform.scale(enemyCar12, (40, 70))
+    enemyCar12 = pygame.image.load('bato1.png').convert_alpha()
+    enemyCar12 = pygame.transform.scale(enemyCar12, (100, 50))
     enemyCar13 = pygame.image.load('enemyCar13.png').convert_alpha()
     enemyCar13 = pygame.transform.scale(enemyCar13, (40, 70))
     enemyCar14 = pygame.image.load('enemyCar14.png').convert_alpha()
@@ -205,14 +222,14 @@ def main():
     enemyCar16 = pygame.transform.scale(enemyCar16, (40, 70))
     enemyCar18 = pygame.image.load('enemyCar18.png').convert_alpha()
     enemyCar18 = pygame.transform.scale(enemyCar18, (40, 70))
-    enemyCar19 = pygame.image.load('enemyCar19.png').convert_alpha()
-    enemyCar19 = pygame.transform.scale(enemyCar19, (40, 70))
-    enemyCar20 = pygame.image.load('enemyCar20.png').convert_alpha()
-    enemyCar20 = pygame.transform.scale(enemyCar20, (40, 70))
+    enemyCar19 = pygame.image.load('ItemSprites.png').convert_alpha()
+    enemyCar19 = pygame.transform.scale(enemyCar19, (70, 40))
+    enemyCar20 = pygame.image.load('ItemSprites.png').convert_alpha()
+    enemyCar20 = pygame.transform.scale(enemyCar20, (70, 40))
     enemyCar21 = pygame.image.load('enemyCar21.png').convert_alpha()
     enemyCar21 = pygame.transform.scale(enemyCar21, (40, 70))
-    enemyCar22 = pygame.image.load('enemyCar22.png').convert_alpha()
-    enemyCar22 = pygame.transform.scale(enemyCar22, (40, 70))
+    enemyCar22 = pygame.image.load('ItemSprites.png').convert_alpha()
+    enemyCar22 = pygame.transform.scale(enemyCar22, (70, 40))
     enemyCar23 = pygame.image.load('enemyCar23.png').convert_alpha()
     enemyCar23 = pygame.transform.scale(enemyCar23, (40, 70))
     enemyCar24 = pygame.image.load('enemyCar24.png').convert_alpha()
@@ -307,7 +324,7 @@ def main():
             game_window.redraw_game_window(man, enemies)
 
             if not running:
-                result = game_over_menu(game_window.win, game_window.width, game_window.height)
+                result = game_over_menu(game_window.win, game_window.width, game_window.height, current_score=game_window.score)
                 if result == "RESTART":
                     running = True  # Set running to True to restart the loop/]
                     pygame.mixer.music.load('0126.mp3')
