@@ -47,16 +47,21 @@ def display_menu(win, width, height):
     """Display a start menu with Start and Quit buttons"""
     font = pygame.font.Font(None, 74)
     title_text = font.render("Avoid the Obstacle", True, (0, 0, 0))
-    start_button = pygame.Rect(width // 2 - 100, height // 2 + 230, 200, 50)  # Adjusted y coordinate
-    quit_button = pygame.Rect(width // 2 - 100, height // 2 + 300, 200, 50)  # Adjusted y coordinate
+    start_button = pygame.Rect(width // 2 - 100, height // 2 + 230, 200, 50)
     background = pygame.image.load('background.png')
+    quit_button = pygame.Rect(width // 2 - 100, height // 2 + 300, 200, 50)
     pygame.mixer.music.load('feel_it.mp3')
     pygame.mixer.music.play(-1)
-    
+    instructions = pygame.image.load('instructions.png')
+    corner_image_rect = instructions.get_rect()
+    corner_image_rect.topleft = (0, height - instructions.get_height())
+    pygame.display.update()
 
     while True:
         win.blit(background, (0,0))
         win.blit(title_text, (width // 2 - title_text.get_width() // 2, height // 1.60))
+        
+        win.blit(instructions, corner_image_rect)
 
         # Draw buttons
         pygame.draw.rect(win, (144, 238, 144), start_button)  # Green button for Start
@@ -147,13 +152,13 @@ def pause_game(win, width, height):
     center_image_rect = center_image.get_rect(center=(width // 2, height // 2))
     pygame.mixer.music.pause()  # Pause the music
     font = pygame.font.Font(None, 74)
-    pause_text = font.render("Paused", True, (255, 255, 255))
+    pause_text = font.render("[PRESS SPACEBAR TO RESUME THE GAME]", True, (255, 255, 255))
     resume_button = pygame.Rect(width // 2 - 100, height // 2 + 40, 200, 50)
     quit_button = pygame.Rect(width // 2 - 100, height // 2 + 100, 200, 50)
 
     while True:
         win.blit(game_screenshot, (0, 0))  # Display the screenshot as the background
-        win.blit(pause_text, (width // 2 - pause_text.get_width() // 2, height // 4))
+        win.blit(pause_text, (width // 2 - pause_text.get_width() // 2, height // 10))
         win.blit(center_image, center_image_rect.topleft)
 
 
