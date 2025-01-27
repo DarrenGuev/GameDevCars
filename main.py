@@ -45,7 +45,7 @@ def is_overlapping(car1, car2):
 
 def display_menu(win, width, height):
     """Display a start menu with Start and Quit buttons"""
-    font = pygame.font.Font(None, 74)
+    font = pygame.font.Font('PixelifySans-VariableFont_wght.ttf', 74)
     title_text = font.render("Avoid the Obstacle", True, (0, 0, 0))
     start_button = pygame.Rect(width // 2 - 100, height // 2 + 230, 200, 50)
     background = pygame.image.load('background.png')
@@ -64,12 +64,12 @@ def display_menu(win, width, height):
         win.blit(instructions, corner_image_rect)
 
         # Draw buttons
-        pygame.draw.rect(win, (144, 238, 144), start_button)  # Green button for Start
-        pygame.draw.rect(win, (144, 238, 144), quit_button)  # Red button for Quit
+        # pygame.draw.rect(win, (144, 238, 144), start_button)  # Green button for Start
+        # pygame.draw.rect(win, (144, 238, 144), quit_button)  # Red button for Quit
 
         # Button text
-        start_text = font.render("Start", True, (0, 0, 0))
-        quit_text = font.render("Quit", True, (0, 0, 0))
+        start_text = font.render("< Start >", True, (0, 0, 0))
+        quit_text = font.render("< Quit >", True, (0, 0, 0))
         win.blit(start_text, (start_button.x + start_button.width // 2 - start_text.get_width() // 2,
                               start_button.y + start_button.height // 2 - start_text.get_height() // 2))
         win.blit(quit_text, (quit_button.x + quit_button.width // 2 - quit_text.get_width() // 2,
@@ -93,6 +93,7 @@ def display_menu(win, width, height):
 def game_over_menu(win, width, height, current_score):
     # Capture the current game screen (screenshot)
     game_screenshot = win.copy()  # Copy the current display surface
+    font = pygame.font.Font('PixelifySans-VariableFont_wght.ttf', 30)
 
     # Load the image you want to display at the center
     center_image = pygame.image.load('GameOver.png')
@@ -116,13 +117,12 @@ def game_over_menu(win, width, height, current_score):
         quit_button = pygame.Rect(width // 2 - 100, height // 2 + 12, 200, 50)
 
         # Draw buttons with transparent color over the background
-        pygame.draw.rect(win, (144, 238, 144), restart_button)  # Red button for restart
-        pygame.draw.rect(win, (144, 238, 144), quit_button)     # Blue button for quit
+        # pygame.draw.rect(win, (144, 238, 144), restart_button)  # Red button for restart
+        # pygame.draw.rect(win, (144, 238, 144), quit_button)     # Blue button for quit
 
         # Add text to the buttons
-        font = pygame.font.SysFont(None, 60)
-        restart_text = font.render("Restart", True, (0, 0, 0))
-        quit_text = font.render("Quit", True, (0, 0, 0))
+        restart_text = font.render("< Restart >", True, (0, 0, 0))
+        quit_text = font.render("< Quit >", True, (0, 0, 0))
         
         # Draw text on buttons
         win.blit(restart_text, (restart_button.x + 30, restart_button.y + 10))
@@ -151,8 +151,8 @@ def pause_game(win, width, height):
     center_image = pygame.image.load('pause.png')
     center_image_rect = center_image.get_rect(center=(width // 2, height // 2))
     pygame.mixer.music.pause()  # Pause the music
-    font = pygame.font.Font(None, 74)
-    pause_text = font.render("[PRESS SPACEBAR TO RESUME THE GAME]", True, (255, 255, 255))
+    font = pygame.font.Font('PixelifySans-VariableFont_wght.ttf', 40)
+    pause_text = font.render("[PRESS SPACEBAR TO RESUME THE GAME]", True, (173, 216, 230))
     resume_button = pygame.Rect(width // 2 - 100, height // 2 + 40, 200, 50)
     quit_button = pygame.Rect(width // 2 - 100, height // 2 + 100, 200, 50)
 
@@ -163,12 +163,12 @@ def pause_game(win, width, height):
 
 
         # Draw buttons
-        pygame.draw.rect(win, (144, 238, 144), resume_button)  # Green Resume button
-        pygame.draw.rect(win, (144, 238, 144), quit_button)  # Red Quit button
+        # pygame.draw.rect(win, (144, 238, 144), resume_button)  # Green Resume button
+        # pygame.draw.rect(win, (144, 238, 144), quit_button)  # Red Quit button
 
         # Button text
-        resume_text = font.render("Resume", True, (0, 0, 0))
-        quit_text = font.render("Quit", True, (0, 0, 0))
+        resume_text = font.render("< Resume >", True, (255, 255, 255))
+        quit_text = font.render("< Quit >", True, (255, 255, 255))
         win.blit(resume_text, (resume_button.x + resume_button.width // 2 - resume_text.get_width() // 2,
                                resume_button.y + resume_button.height // 2 - resume_text.get_height() // 2))
         win.blit(quit_text, (quit_button.x + quit_button.width // 2 - quit_text.get_width() // 2,

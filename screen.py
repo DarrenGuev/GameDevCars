@@ -15,7 +15,7 @@ class GameWindow:
         self.bg_x = (self.width - self.bg_width) // 2  # Adjusted for centering
         self.scroll_speed = 15
         self.score = 0
-        self.font = pygame.font.Font(None, 36)
+        self.font = pygame.font.Font('PixelifySans-VariableFont_wght.ttf', 36)
         self.bg_segments = self.init_background_segments()
         
     def init_background_segments(self):
